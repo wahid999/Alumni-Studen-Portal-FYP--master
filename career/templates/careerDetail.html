@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  
+
+<div class="container">
+    <a class="btn btn-block btn-outline-dark mb-5" href="{% url 'addCareer' %}">+Add Job/Intership Post</a>
+    
+    {% if messages %}
+        {% for message in messages %}
+          <p class="text-center alert alert-info">{{message}}</p>
+        {% endfor %}
+    {% endif %}
+        
+    <div class="card">
+      {% if flag %}
+      <h1 class="card-header">{{post.postType}}  <span style="font-size: small;">{{post.datePosted}}</span> <span  style="float: right;"> 
+        <a href="{% url 'updateCareer' post.id %}" class="btn btn-outline-success  btn-sm">Update</a>
+        <a href="{% url 'deleteCareer' post.id %}" class="btn btn-outline-danger btn-sm">Delete</a></span></h1>
+
+      {% else %}
+      
+      <h1 class="card-header">{{post.postType}}   <span  style="margin-top:20px;float: right;font-size:small">{{post.datePosted}}</span></h1>
+
+      {% endif %}  
+
+        <div class="card-body">
+          <h2 class="card-title">{{post.title}}</h2>
+        
+          <div class="row">
+          <div class="col-md-6">
+          <p class="card-text">{{post.description}}</div>
+        <div class="col-md-6">
+          
+         {% if post.image  %}
+
+         <a href="{{post.image.url}}" target="_target">
+         <img src="{{post.image.url}}" height="500" width="500" style="float:right" class="img-fluid">
+        </a>
+        {% else %}
+         {% endif %}
+        </div>        
+
+    </div>
+    
+    <h3 class="text-center mt-5 border-top pt-3 link"> <i>Author </i><a  href="{% url 'userView' post.author.username%}"> @{{post.author|lower|capfirst}} </a></h3>
+                  
+        </div>
+      
+   
+        
+      </div>
+      <div class="row bootstrap snippets   mt-5">
+        <div class="col-md-12 col-md-offset-2  col-sm-12">
+            <div class="comment-wrapper">
+                <div class="panel-heading rounded-top mb-3 bg-dark text-light mt-2 p-3">
+                    Comment Panel
+                </div>
+                
+                <form action="">
+                    <textarea id='comment' class="form-control" placeholder="Write a Comment..." rows="3"></textarea>
+                    <br>
+                    <button type="submit" id='AddComment' class="btn ml-2 btn-dark pull-right">Post Comment</button>
+                </form> 
+                <div class="panel panel-info">
+                    
+                    <div class="" >
+                       
+                        <div class="clearfix"></div>
+                        <hr>
+                        <h2 >Comments(<span id='commentsCountTechTrend'>{{comments.count}}</span>)</h2>
+                        <ul class="media-list mt-5 "  id='demo'>
+                            
+                            {% if comments %}
+                            {% for  comment in comments  %}
+                            <li class="media mt-2 "  id='commentItem'>
+                                <a href="#" class="">
+                                    <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" width="100" height="100" class="rounded-circle">
+                                </a>
+                                <div class="media-body ml-5 card p-3">
+                                    <span>
+                                        {% if comment.user == user %}
+                                        <a class="btn btn-outline-danger btn-sm float-right ml-2" href="{% url 'deleteCommentsCareer' comment.id post.id %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                            
+                                        {% endif %}
+                                  <strong class="text-success">@{{comment.user.username}}</strong>
+                                        <small class="text-muted  mb-2 float-right ">{{comment.date|timesince}} ago</small>
+                                        <input type="hidden" class="commentID"  value="{{comment.id}}">
+                                    </span>
+                                    <p class="">
+                                        {{comment.content}}
+                                        
+                                    </p>
+                                    <!-- <div class="row" >
+                                      <div class="col-md-10">  <input type="text" class="form-control"> </div>
+                                      <div class="col-md-2"><button class="btn btn-sm btn-success">update</button></div>
+                                    </div> -->
+                                </div>
+                            </li>
+                            {% endfor %}
+                            {% else %}
+                            <h5 id='NoneComment' class="text-dark">No comments to show</h5>     
+                            {% endif %}
+                            <hr>    
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+    
+    </div>
+    </div>  
+  
+    
+    
+    
+{% endblock content %}

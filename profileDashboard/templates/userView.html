@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+  
+<div class="container  " >
+    
+
+  
+  {% if not flagProfileData %}
+    
+    
+      
+    <div class="card p-5 bg-light"  >
+    <div class="row">
+        <div class="col-md-12">
+
+                <img src="{{profile.profilePic.url}}" class="float-right rounded-circle border border-dark" width="100" height="100" alt="">
+              
+                <h1 class="mt-3"><span  >   @{{profile.user.username|lower|capfirst}}</span>
+                  </h1>
+                <hr class="mt-5">
+        </div>
+    </div>
+
+    <div class="row ">
+
+        <div class="col-md-12 ">
+            <h3 class="ml-1 align-center"> Personal Information</h3>
+    
+                <hr >
+            </div>
+    </div>
+    
+    {% if  profileFlag %}
+    <div class="profile-info">
+        <div class="form-row">
+            <div class="col-md-6 ">
+              <label for="validationDefault01" style="color: rgb(146, 146, 146);font-size: 20px">Full  Name</label>
+              <p  class="ml-2" style="color: black;" >{{profile.firstName|lower|capfirst}}&nbsp{{profile.lastName|lower|capfirst}}</p><hr class="mr-2">
+            </div>
+          
+
+            <div class="col-md-6">
+              <label for="validationDefault01" style="color: rgb(146, 146, 146);font-size: 20px">Contact #</label>
+              <p  class="ml-2" style="color: black;">{{profile.contact}}</p><hr class="mr-2">
+            </div>
+            
+            <div class="col-md-6">    
+                    <div class="form-group ">
+                          <label  style="color: rgb(146, 146, 146); font-size: 20px;"> Email</label>
+                          <p  class="ml-2" style="color: black;">{{profile.user.email}}</p><hr class="mr-2">
+                    </div>
+              
+            </div>
+
+            <div class="col-md-6">    
+              <div class="form-group ">
+                    <label  style="color: rgb(146, 146, 146); font-size: 20px;"> Alumni Type</label>
+                    <p>  {{profile.alumniType}}</p><hr class="mr-2">
+              </div>
+            </div>
+    
+          </div>
+    
+            <div class="row">
+           
+              <div class="col-md-12">
+                <div class="form-group ">
+                  <label  style="color: rgb(146, 146, 146); font-size: 20px;"> Your CV or Resume</label>
+                 <p>  <a href="" class="link">File.doc</a></p><hr class="mr-2">
+                </div>
+              </div>
+   
+    
+            </div>
+
+            <div class="form-row">
+            
+                <div class="col-md-12 ">
+                  <label for="validationDefault01" style="color: rgb(146, 146, 146); font-size: 20px;">Introduction</label>
+                  <p  style="color: black;" >{{profile.intro}}</p><hr class="mr-2">
+                </div>
+              </div>
+        </div>
+    {% else %}
+
+        <p class="alert alert-info text-center ml-5 mr-5">No rechords to show...</p>
+    {% endif %}
+
+
+
+
+
+    <div class="row ">
+
+        <div class="col-md-12 ">
+            <h3 class="ml-1 align-center mb-3"> Acadamic Information</h3>
+    
+            </div>
+    </div>
+    {% if degreeCountFlag%}
+    <div class="degreeInfo">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+
+          <th  style="color: rgb(146, 146, 146); font-size:  20px;text-transform:capitalize ;font-weight:unset;">Degree</th>
+          <th  style="color: rgb(146, 146, 146); font-size: 20px;text-transform:capitalize; font-weight:unset">Date Started(degree)</th>
+          <th  style="color: rgb(146, 146, 146); font-size: 20px;text-transform:capitalize; font-weight:unset">Date Finished(degree)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for deg in degree  %}
+        <tr>
+          <td>{{deg.degree}}</td>
+          <td>{{deg.dateStarted}}</td>
+          <td>{{deg.dateFinished}}</td>
+     
+        </tr>                              
+        {% endfor %}
+
+        
+      </tbody>
+    </table>
+    </div>
+    {% else %}
+    <p class="alert alert-info text-center ml-5 mr-5">No rechords to show...</p>
+
+    {% endif %}
+        
+    <div class="row ">
+
+        <div class="col-md-12 ">
+            <h3 class="ml-1 align-center mb-3"> Work Experience </h3>
+    
+            </div>
+    </div>
+    {% if workExpCountFlag %}
+    
+    <div class="workExp">
+        <table class="table table-hover">
+        <thead>
+            <tr>
+            <th scope="col"  style="color: rgb(146, 146, 146);font-weight: unset; font-size: 20px;text-transform:capitalize;">Company Name</th>
+            <th scope="col"  style="color: rgb(146, 146, 146);font-weight: unset; font-size: 20px;text-transform:capitalize;">Work Experience</th>
+            <th scope="col"  style="color: rgb(146, 146, 146);font-weight: unset; font-size: 20px;text-transform:capitalize;">Position</th>
+            <th scope="col"  style="color: rgb(146, 146, 146);font-weight: unset; font-size: 20px;text-transform:capitalize;">Website</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for we in workExp %}
+            <tr>
+            <td>{{we.companyName}}</td>
+            <td>{{we.experienceTime}}</td>
+            <td>{{we.position}}</td>
+            <td> 
+                
+                {% if we.portfolioWebsite %}
+                <a target="_blank" href="https://{{we.portfolioWebsite}}">{{we.portfolioWebsite}}</a>
+                {% else %}
+                None
+
+                {% endif %}
+                
+                </td>
+     
+            </tr>
+            {% endfor %}
+        
+            
+        </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="text-center alert alert-info ml-5 mr-5">No rechords to show</p>
+
+    {% endif %}
+      
+   
+
+
+
+
+
+</div>  
+</div>
+
+
+{% else %}
+<p class="alert alert-danger text-center">No Profile data to show !</p>
+{% endif %}
+
+ </div>   
+{% endblock content %}

@@ -1,0 +1,64 @@
+{% extends "baseProfile.html" %}
+
+{% block content %}
+    
+   
+  
+<style>
+  .btx-link{
+    color: blue;
+  }
+  .btx-link:hover{
+    color: blue;
+    text-decoration: underline;
+    font-size: 25px;
+  }
+</style>
+    <div class="container">
+      <h3 class=" mb-5">{{name}}</h3>
+      
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col"># ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Date Posted</th>
+            <th scope="col">Operations</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          
+         
+          
+          {% if successFlag %}
+  
+          <p class="alert alert-info">No rechord to Show</p>
+            
+          {% endif %}
+            
+          {% for d in success %}
+
+          <tr>
+            <td> <a class="btx-link"  href="{% url 'SuccessStoriesDisplayDetail' d.id %}"  > {{d.id}}</a> </td>
+            <td>{{d.title|slice:":25" }}...</td>
+            <td>{{d.datePosted}}</td>
+            <td>
+              <a  class="btn-outline-success btx btn btn-sm" href="{% url 'updateSuccessStories' d.id %}" ><i class="fa fa-edit" aria-hidden="true"></i></a href="">
+              <a  class="btn btn-outline-danger btx btn-sm"  href="{% url 'deleteSuccessStories' d.id %}" ><i class="fa fa-trash" aria-hidden="true"></i></a href="">
+            </td>
+          </tr>     
+
+          {% endfor %}
+
+            
+
+      
+
+        </tbody>
+      </table>
+    </div>
+
+
+
+{% endblock content %}

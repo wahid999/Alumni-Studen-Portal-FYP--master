@@ -1,0 +1,92 @@
+{% extends "baseProfile.html" %}
+
+{% block content %}
+  
+
+<div class="container mt-5">
+  <h3>Profile Information</h3>
+      <hr>    
+  <form method="POST" class="mb-5" enctype='multipart/form-data'>
+  {% csrf_token %}
+    <div class="form-row">
+      <div class="col-md-6 mb-3">
+        <label for="validationDefault01">First  name</label>
+        {{form.firstName}}
+      </div>
+    
+      <div class="col-md-6 mb-3">
+        <label for="validationDefault02">Last name</label>
+        {{form.lastName}}
+      </div>
+    
+      <div class="col-md-6 mb-3">
+        <label for="validationDefault02">Contact #</label>
+        {{form.contact}}
+
+      </div>
+      
+
+        
+   
+
+      <div class="col-md-6 mb-3">
+        <label for="validationDefault01">Alumni Type</label>
+        <select class="form-control" name="alumniType"  id="alumniType" value="Professional Alumni">
+              {% for typeOptions in  form.alumniType %}
+                <option>{{typeOptions}}</option>
+              {% endfor %}
+          </select>
+      </div>
+
+    </div>
+    <div class="form-row">
+      
+        <div class="col-md-12 mb-3">
+          <label for="validationDefault02" >Tell us About yourself</label>
+          {{form.intro}}
+
+        </div>
+      </div>               
+      <div class="row">   
+        
+        <div class="col-md-5">
+            <div class="form-group  mb-5">
+              <label >Profile Picture </label>
+              {% if profile.profilePic %}
+                <br>
+                  Current File :<a target="_blank" href="{{profile.profilePic.url}}">{{profile.profilePic.url|slice:':10'}}...</a>
+              {% endif %}
+                
+              <input name="profilePic" type="file" class="form-control-file " id="exampleFormControlFile1" >
+            </div>
+
+        </div>
+
+      <div class="col-md-5">
+        <div class="form-group mb-5">
+          <label >Upload Your CV or Resume(Optional)</label>
+          {% if profile.profilePic %}
+            <br>
+              Current File :<a target="_blank" href="{{profile.profilePic.url}}">{{profile.profilePic.url|slice:':10'}}...</a>
+          {% endif %}
+          
+          <input name="cvResume" type="file" class="form-control-file " id="exampleFormControlFile1">
+        </div>
+      </div>
+
+    </div>
+      <hr>
+
+      
+      {% if profileFlag %}
+      <button class="btn btn-outline-dark btn-block"> Update Profile Information</button>
+
+      {% else %}
+      <button class="btn btn-outline-dark btn-block"> + Add Profile Information</button>
+
+      {% endif %}
+          
+    </form>
+  </div>
+
+{% endblock content %}

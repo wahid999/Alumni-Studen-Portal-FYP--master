@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="container">
+      <div class="container">
+        
+        {% if userUserDegreeCFlage %}
+        <div class="container">
+        {% for message in messages %}
+        <p class="text-center alert alert-info">{{message}}</p>
+
+        {% endfor %}
+
+
+        <a class="btn btn-block btn-outline-dark mb-5" href="{% url 'addSuccessStories' %}">+Add Success Stories</a>
+        
+        {% if SuccessStoriesPostCountFlag     %}
+          
+          
+        {% for post in posts %}
+        <div class="col-md-10 offset-md-1">
+        <div class="card mb-5 justify-content-center col-md-12 col-sm-12" style="width: 50rem;">
+          <div class="card-body body-change  justify-content-center img-fluid ">
+            <h5 class="card-title">
+                <span class="title_no">{{post.id}} </span>
+                <a class="link" href="{% url 'userView' post.author.username%}">@{{post.author.username}}</a> 
+                    <div class="float-right" style="font-size:small">
+                       <span >
+                          Date Posted:
+                        </span>
+                        <span class="ml-2 float-right " style="color:rgb(156, 156, 156);">
+                          {{post.datePosted}}</span>
+                    </div>
+
+                  </h5>
+                    <img width="250" height="250" class="ml-2 rounded   float-right" src="{{post.image.url}}" alt="Card image cap">
+                       <p class="card-text">{{post.description|safe|slice:":800"}}</p>
+                    [<a href="{% url 'SuccessStoriesDisplayDetail' post.id %}" class="link">Reed More</a>]
+                    <hr>
+                    <div class="well" style="text-align: center;">
+                        <q style="color:rgb(156, 156, 156)" >
+                          {{post.qoute}}
+                    </q>
+                  
+                  </div>
+             </div>
+        </div> 
+        </div>
+
+          {% endfor %}
+
+          {% else %}
+      <p class="alert alert-info ml-5 mr-5 text-center">No rechords to show</p>
+
+          {% endif %}
+
+        </div>
+        {% else %}
+        <p class="alert alert-info ml-5 mr-5 text-center">Complete Your Profile to use this Module <a href="{% url 'dashboard' %}">Click Here</a> </p>
+        {% endif %}
+          
+       
+
+      </div>
+    </div>
+   
+ <div class="pagination d-flex justify-content-center mt-5">
+        
+      {% if   posts.has_previous %}
+
+          <a style="text-decoration:none;" class="mr-3  btn btn-outline-info btn-sm" href="?page={{ posts.previous_page_number }}"> << </a>
+          {% endif %}
+
+          {% for num in posts.paginator.page_range %}
+        
+          {% if posts.number != num %}
+
+                <a  href="?page={{ num }}"  class="mr-3  btn btn-outline-info btn-sm">  {{ num }}</a>
+
+
+            {% elif num  > posts.number|add:'3' and num < posts.number|add:'3' %}
+            <a href="?page=">{{num}}</a> 
+          {% endif %}
+              
+        {% endfor %}
+        {% if  posts.has_next  %}
+        <a style="text-decoration:none;" class="mr-3  btn btn-outline-info btn-sm" href="?page={{ posts.next_page_number }}">>></a>
+
+    {% endif %}
+          
+      
+
+  </div>
+  </div>
+{% endblock content %}

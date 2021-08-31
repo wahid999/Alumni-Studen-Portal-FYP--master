@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="container">
+
+  <div id='techTrend' class="border shadow-lg p-3 bg-white  pt-5  pb-5 pl-5 pr-5 rounded">
+
+    <h2> <a href="{% url 'TechTrendDisplay' %}">Latest Market
+       Trends</a> </h2>
+    <hr>
+    <div class="row">
+      {% for t  in tech %}
+      <div class="col-sm-4 ">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{t.title}}</h5>
+            <hr>
+            <p class="card-text">{{t.intro|truncatechars:120}}</p>
+            [<a href="{% url 'TechTrendDisplayDetail' t.id %}" class="link link-primary">Read More</a>]
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      
+      
+    </div>
+    
+  </div>
+
+
+  <div id='successStories' class="border mt-5 shadow-lg p-3 bg-white  pt-5  pb-5 pl-5 pr-5 rounded">
+
+    <h2> <a href="{% url 'SuccessStoriesDisplay' %}">Latest Success Stories</a> </h2>
+    <hr>
+    <div class="row">
+      {% for s  in stories %}
+      <div class="col-sm-4 ">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{s.title}}</h5>
+            <hr>
+            <p class="card-text">{{s.intro|truncatechars:120}}</p>
+            [<a href="{% url 'SuccessStoriesDisplayDetail' s.id %}" class="link link-primary">Read More</a>]
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      
+      
+    </div>
+    
+
+  </div>
+
+  <div id='Job' class="border mt-5 shadow-lg p-3 bg-white  pt-5  pb-5 pl-5 pr-5 rounded">
+
+    <h2> <a href="{% url 'careerDisplay' %}">Latest Jobs-Interships</a> </h2>
+    <hr>
+    <div class="row">
+      {% for c  in career %}
+      <div class="col-sm-4 ">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{c.title}}</h5>
+            <hr>
+            <p class="card-text">{{c.description|truncatechars:100}}</p>
+            [<a href="{% url 'careerDisplayDetail' c.id %}" class="link link-primary">Read More</a>]
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      
+      
+    </div>
+    
+  </div>
+
+
+  <div id='job'></div>
+</div>
+{% endblock content %}<h1>home</h1>

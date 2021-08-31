@@ -1,0 +1,269 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+    <title>Hello, world!</title>
+</head>
+<style>
+
+    body{
+        background:#eee;    
+    }
+    .chat-list {
+        padding: 0;
+        font-size: 1rem;
+    }
+    
+    .chat-list li {
+        margin-bottom: 10px;
+        overflow: auto;
+        color: #ffffff;
+    }
+    
+    .chat-list .chat-img {
+        float: left;
+        width: 48px;
+    }
+    
+    .chat-list .chat-img img {
+        -webkit-border-radius: 50px;
+        -moz-border-radius: 50px;
+        border-radius: 50px;
+        width: 100%;
+    }
+    
+    .chat-list .chat-message {
+        -webkit-border-radius: 50px;
+        -moz-border-radius: 50px;
+        border-radius: 50px;
+        background: #4fdcff;
+        display: inline-block;
+        padding: 10px 20px;
+        position: relative;
+    }
+    
+    .chat-list .chat-message:before {
+        content: "";
+        position: absolute;
+        top: 15px;
+        width: 0;
+        height: 0;
+    }
+    
+    .chat-list .chat-message h5 {
+        margin: 0 0 5px 0;
+        font-weight: 600;
+        line-height: 100%;
+        font-size: 1.5rem;
+    }
+    
+    .chat-list .chat-message p {
+        line-height: 18px;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .chat-list .chat-body {
+        margin-left: 20px;
+        float: left;
+        width: 70%;
+    }
+    
+    .chat-list .in .chat-message:before {
+        left: -12px;
+        border-bottom: 20px solid transparent;
+        border-right: 20px solid #4fdcff;
+    }
+    
+    .chat-list .out .chat-img {
+        float: right;
+    }
+    
+    .chat-list .out .chat-body {
+        float: right;
+        margin-right: 20px;
+        text-align: right;
+    }
+    
+    .chat-list .out .chat-message {
+        background: #474747;
+    }
+    
+    .chat-list .out .chat-message:before {
+        right: -12px;
+        border-bottom: 20px solid transparent;
+        border-left: 20px solid #474747;
+    }
+    
+    .card .card-header:first-child {
+        -webkit-border-radius: 0.3rem 0.3rem 0 0;
+        -moz-border-radius: 0.3rem 0.3rem 0 0;
+        border-radius: 0.3rem 0.3rem 0 0;
+    }
+    .card .card-header {
+        background: #17202b;
+        border: 0;
+        font-size: 1rem;
+        padding: .65rem 1rem;
+        position: relative;
+        font-weight: 900;
+        color: #ffffff;
+    }
+    
+    .content{
+        margin-top:40px;    
+    }
+    .btx{
+        color: black;
+        background-color: white;
+        border: 1px solid black ;
+    }
+    .btx:hover{
+        color: white;
+        background-color: black;
+        border: 1px solid black ;
+    }
+    .form-btx {
+        /* This bit sets up the horizontal layout */
+        display:flex;
+        flex-direction:row;
+        
+        /* This bit draws the box around it */
+     
+        /* I've used padding so you can see the edges of the elements. */
+        padding:2px;
+      }
+      
+      input {
+        /* Tell the input to use all the available space */
+        flex-grow:2;
+        /* And hide the input's outline, so the form looks like the outline */
+        border:none;
+      }
+      
+      input:focus {
+        /* removing the input focus blue box. Put this on the form if you like. */
+        outline: none;
+      }
+      
+      button {
+        /* Just a little styling to make it pretty */
+        border:1px solid blue;
+        background:blue;
+        color:white;
+      }
+
+      .btx-input{
+          border-left: 1px solid black;
+          border-top: 1px solid black;
+          border-bottom: 1px solid black;
+          border-radius: 25px;
+      }
+      @media (min-width: 576px) {
+        .modal-dialog { max-width: none; }
+      }
+      
+      .modal-dialog {
+        width: 98%;
+        height: 95%;
+        padding: 0;
+      }
+      
+      .modal-content {
+        height: 99%;
+      }
+      .btx-close{
+        color: rgb(202, 202, 202)
+
+      }
+      .btx-close:hover{
+        color: white;
+
+    }
+</style>
+<body>
+    
+
+    
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+    
+    <div class="">
+    
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
+</body>
+</html>
+<script>
+	$(".messages").animate({ scrollTop: $(document).height() }, "fast");
+    var chat='#chat'
+    function setFocusOnDivWithId(chat) 
+    {   const scrollIntoViewOptions = { behavior: "smooth", block: "center",overflow:"auto"}; 
+      document.getElementById('chat').scrollIntoView(scrollIntoViewOptions); };
+       setFocusOnDivWithId('chat');
+
+    $('#submit').click(function(){
+        var text=$('#message').val()
+        var html_data_user=`<li class="in">
+            <div class="chat-img">
+                <img alt="Avtar" src="{% static 'static/botImage.jpg' %}">
+
+            </div>
+            <div class="chat-body">
+                <div class="chat-message">
+                    <h5>You</h5>
+
+                    <p>${text}</p>
+                </div>
+            </div>
+        </li> `
+        $('#chat').append(html_data_user)
+        $('#chat').animate({scrollTop: $('#chat').prop("scrollHeight")}, 500);
+
+        $.ajax({
+            url:'INSERT',
+            type:'POST',
+            data:{text:text}
+        })
+        .done(function(response){
+        var text=response['text']
+        var html_data_user=` <li class="out">
+            <div class="chat-img">
+             <img alt="Avtar" src="{{user.profile.profilepic.url}}">
+
+            </div>
+            <div class="chat-body">
+                <div class="chat-message">
+                    <h5>BOT</h5>
+
+                    <p>${text}</p>
+                </div>
+            </div>
+        </li>
+        
+        `
+        $('#chat').append(html_data_user)
+        })
+        .fail(function(){console.log('message sending fail')})
+    })
+
+
+
+
+
+
+    
+
+</script>    
+  
+</body>
+  </html>

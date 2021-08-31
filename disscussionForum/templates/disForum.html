@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container mt-5" >
+
+        <div class="row">
+        <div class="col-md-6">
+            <h3>Dsscussion Forum</h3>
+        </div>
+<!-- Button trigger modal -->
+<div class="col-md-6">
+<button type="button" class="btn btn-outline-dark float-right" data-toggle="modal" data-target="#exampleModal">
+    + Start new Topic
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add New Topic</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="height: 330px;" >
+            <form method="POST" action="{% url 'addDissForum' %}">
+                {% csrf_token %}
+                <div class="form-group ">
+                    <textarea maxlength="254" rows="12" class="form-control" placeholder="type your text here" name="topicTitle" rows="3"></textarea>
+        
+                </div>
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-outline-dark ">Save</button>
+        </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<hr>
+<hr>
+
+        <div class="col-md-12 mt-5 border-top pt-5">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" required='required' placeholder="Type a keyword" name="searchTopic" >
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-outline-dark">Search</button>
+                    </div>
+                  </div>
+                </form>
+        
+        </div>
+
+
+
+    </div>
+    {% for message in messages %}
+    <p class="alert alert-{{message.tags}} text-center">{{message}}</p>
+  {% endfor %}
+
+    <div class="mb-5" >
+   
+    </div>
+
+    
+     {% if  dataFlag %}
+        <h3 class="text-center text-dark  mb-5"> No Results Found </h3>
+        {% else %}
+        <h3 class="text-center text-dark  mb-5"> ({{datax.count}}) Results Found </h3>
+
+    {% endif %}
+        
+
+    {% for d in  data %}
+      
+    <div class="mt-5">
+        <div class="card">
+            <div class="card-header">
+             <a href="{% url 'userView' d.author.username%}">@{{d.author.username}}</a>  <span class="float-right">{{d.datePosted}}</span>
+            </div>
+            <div class="card-body">
+                <a class="text-dark" href="{% url 'dissForumDetail' d.id %}" >{{d.title}}
+                </a>
+            </div>
+    </div>
+    </div>
+
+    {% endfor %}
+
+    <div class="pagination d-flex justify-content-center mt-5">
+        
+        {% if  data.has_previous %}
+
+            <a style="text-decoration:none;" class="mr-3  btn btn-outline-info btn-sm" href="?page={{ data.previous_page_number }}"> << </a>
+            {% endif %}
+
+            {% for num in data.paginator.page_range %}
+          
+            {% if post.number != num %}
+  
+                  <a  href="?page={{ num }}"  class="mr-3  btn btn-outline-info btn-sm">  {{ num }}</a>
+
+
+              {% elif num  > data.number|add:'3' and num < data.number|add:'3' %}
+              <a href="?page=">{{num}}</a> 
+            {% endif %}
+                
+          {% endfor %}
+          {% if  data.has_next  %}
+          <a style="text-decoration:none;" class="mr-3  btn btn-outline-info btn-sm" href="?page={{ data.next_page_number }}">>></a>
+
+      {% endif %}
+            
+        
+
+    </div>
+
+</div>
+{% endblock content %}

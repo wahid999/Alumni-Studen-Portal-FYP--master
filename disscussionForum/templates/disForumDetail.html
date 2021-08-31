@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block content %}
+  
+<div class="container">
+    <div class="messages">
+        
+        {% if messages %}
+            {% for message in messages  %}
+              <p class="text-center alert alert-info">{{message}}</p>
+            {% endfor %}
+        {% endif %}
+            
+    </div>
+    <div class="card">
+        <h5 class="card-header"> <a href=""> @{{data.author.username}} </a> <span class="float-right">
+            
+            {% if data.author == user %}
+            <a class="btn btn-sm btn-outline-danger mr-2" href="{% url 'dissForumDelete' data.id  %}" >delete</a>
+             <button class="btn btn-sm btn-outline-success mr-2" data-toggle="modal" data-target="#exampleModal" >update</button>                
+            {% endif %}
+                
+
+              {{data.datePosted}}</span> </h5>
+        <div class="card-body">
+          <h2 class="card-title">{{data.title}}</h2>
+        </div>
+      </div>
+
+
+
+      <div class="row bootstrap snippets   mt-5">
+        <div class="col-md-12 col-md-offset-2  col-sm-12">
+            <div class="comment-wrapper">
+                <div class="panel-heading rounded-top mb-3 bg-dark text-light mt-2 p-3">
+                    Disscussion Panel
+                </div>
+                
+                <form method="POST">
+                    <textarea id='suggestion' class="form-control" placeholder="Write a Comment..." rows="3"></textarea>
+                    <br>
+                    <button type="submit" id='AddSuggestion' class="btn ml-2 btn-dark pull-right">Post Suggestion</button>
+                </form> 
+                <div class="panel panel-info">
+                    
+                    <div class="" >
+                       
+                        <div class="clearfix"></div>
+                        <hr>
+                        <h2 >Suggestion(<span id='commentsCountDissFourm'>{{comments.count}}</span>)</h2>
+                        <ul class="media-list mt-5 "  id='demoDissForum'>
+                            
+                            {% if comments %}
+                            {% for  comment in comments  %}
+                            <li class="media mt-2 "  id='commentItem'>
+                                <a href="#" class="">
+                                    <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" width="100" height="100" class="rounded-circle">
+                                </a>
+                                <div class="media-body ml-5 card p-3">
+                                    <span>
+                                  <strong class="text-success">@{{comment.user.username}}</strong>
+                                        
+                                        {% if comment.user == user %}
+                                        <a class="btn btn-outline-danger btn-sm float-right ml-2" href="{% url 'deleteComments' comment.id data.id %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                            
+                                        {% endif %}
+                                            
+                                        <small class="text-muted  mb-2 float-right ">{{comment.date|timesince}} ago</small>
+                                        <input type="hidden" class="commentID"  value="{{comment.id}}">
+                                    </span>
+                                    <p class="">
+                                        {{comment.content}}
+                                        
+                                    </p>
+                                    <!-- <div class="row" >
+                                      <div class="col-md-10">  <input type="text" class="form-control"> </div>
+                                      <div class="col-md-2"><button class="btn btn-sm btn-success">update</button></div>
+                                    </div> -->
+                                </div>
+                            </li>
+                            {% endfor %}
+                            {% else %}
+                            <h5 id='NoneCommentDissFourm' class="text-dark">No Suggestion to show</h5>     
+                            {% endif %}
+                            <hr>    
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    </div>
+    
+      
+      <!-- Modal -->
+      <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Update Disscussion Topic</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="height: 330px;" >
+                <form method="POST" action="{% url 'dissUpdate' data.id %}">
+                    {% csrf_token %}
+                    <div class="form-group ">
+                        <textarea maxlength="254" required='required' rows="12" class="form-control" placeholder="type your text here" name="topicTitle" rows="3">{{data.title}}</textarea>
+            
+                    </div>
+            
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-outline-dark ">Save</button>
+            </form>
+    
+            </div>
+          </div>
+        </div>
+      </div>
+    
+</div>
+{% endblock content %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="container ">
+
+  
+  {% if userUserDegreeCFlage %}
+  {% for message in messages %}
+  <p class="text-center alert alert-info">{{message}}</p>
+
+  {% endfor %}
+    <a class="btn btn-block btn-outline-dark mb-5" href="{% url 'addCareer' %}">+Add Job/Intership Post</a>
+
+    
+    {% if careerPostCountFlag %}
+      
+      
+    {% for post in posts  %}
+    <div class="card mb-5">
+        <h1 class="card-header">{{post.postType}}<span  style="margin-top:20px;float: right;font-size:small">{{post.datePosted}}</span></h1>
+        <div class="card-body">
+          <h2 class="card-title">{{post.title}}</h2>
+          <p class="card-text">{{post.description|slice:":255"}}</p>
+          
+    
+          <a href="{% url 'careerDisplayDetail' post.id %}"  class="btn btn-primary">Watch Details</a> 
+              
+        </div>
+      </div>
+    {% endfor %}
+
+      {% else %}
+      <p class="alert alert-info ml-5 mr-5 text-center">No rechords to show</p>
+    {% endif %}
+
+  {% else %}
+  <p class="alert alert-info ml-5 mr-5 text-center">Complete Your Profile to use this Module <a href="{% url 'dashboard' %}">Click Here</a> </p>
+
+  {% endif %}
+
+  <div class="pagination d-flex justify-content-center mt-5">
+        
+    {% if   posts.has_previous %}
+
+        <a style="text-decoration:none;" class="mr-3  btn btn-outline-info btn-sm" href="?page={{ posts.previous_page_number }}"> << </a>
+        {% endif %}
+
+        {% for num in posts.paginator.page_range %}
+      
+        {% if posts.number != num %}
+
+              <a  href="?page={{ num }}"  class="mr-3  btn btn-outline-info btn-sm">  {{ num }}</a>
+
+
+          {% elif num  > posts.number|add:'3' and num < posts.number|add:'3' %}
+          <a href="?page=">{{num}}</a> 
+        {% endif %}
+            
+      {% endfor %}
+      {% if  posts.has_next  %}
+      <a style="text-decoration:none;" class="mr-3  btn btn-outline-info btn-sm" href="?page={{ posts.next_page_number }}">>></a>
+
+  {% endif %}
+        
+    
+
+</div>
+  </div>      
+    
+{% endblock content %}

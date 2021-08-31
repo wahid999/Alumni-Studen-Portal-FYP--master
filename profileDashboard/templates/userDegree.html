@@ -1,0 +1,62 @@
+{% extends "baseProfile.html" %}
+
+{% block content %}
+  
+<div class="container mt-5">
+    <h3>User Degree</h3>
+        <hr>    
+    <form method="POST"  class="mb-5 container">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label>Department</label>
+        <select class="selectpicker form-control " name="brand"  id='department' >
+          
+          {% if userDeg.degree %}
+          <option>{{userDeg.degree.department}}</option>                                    
+          {% else %}
+          <option>-----------</option>                                    
+          {% endif %}
+
+            
+          {% for dep in  department %}
+              <option value="{{dep}}">{{dep}}</option>
+          {% endfor %}
+        </select>
+        <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+      </div>
+
+    <div class="form-gourp">
+        <label for="validationDefault02">Degree</label>
+        <select class="selectpicker form-control " id='degree' name='degree'>
+          {% if userDeg.degree %}
+          <option>{{userDeg.degree}}</option>                                    
+          {% else %}
+          <option>-----------</option>                                    
+          {% endif %}
+        </select>
+    </div>
+
+    <div class="form-group mt-3">
+        <label for="validationDefault02" >Date Started(university degree)</label>
+        <input type="number" min="1900" max="2099" step="1" value="2024" class="form-control" id="validationDefault02" value="{{userDeg.dateStarted}}" placeholder="Last name" name="dateStarted"  >
+    </div>
+    
+    <div class="form-group">
+        <label for="validationDefault02">Date Finish(university degree)</label>
+        <input ttype="number" min="1900" max="2099" step="1" value="2024" class="form-control" id="validationDefault02" value="{{userDeg.dateFinished|date:'Y-m-d'}}"  placeholder="Last name" name="dateFinished"  >
+      </div>
+
+        <hr> 
+        {% if flag %}
+        <button class="btn btn-outline-dark btn-block"> Update Degree Information</button>
+
+        {% else %}
+        <button class="btn btn-outline-dark btn-block"> + Add Degree Information</button>
+
+        {% endif %}
+            
+      </form>
+    </div>
+
+{% endblock content %}

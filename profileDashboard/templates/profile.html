@@ -1,0 +1,246 @@
+{% extends "baseProfile.html" %}
+
+
+{% block content %}
+  
+<body class="bg-light">
+    <div class="" >
+        <div class="sidebar " style="height: auto;">
+ 
+            <div class="sidebar-wrapper  " style="background-color: #447e9b; height:auto" >
+                <div class="logo">
+                    <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/fox.jpg" class="rounded-circle" width="220" height="220" alt="">
+                    <a  class="simple-text">
+                        @{{user.username}}
+                    </a>
+
+                </div>
+                <ul class="nav ">
+                    <li class="nav-item ">
+                        <a class="nav-link">
+                            <i class="nc-icon nc-chart-pie-35"></i>
+                            <p >Dashboard</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" >
+                            <i class="nc-icon nc-circle-09"></i>
+                            <p>Success Stories</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link">
+                            <i class="nc-icon nc-notes"></i>
+                            <p>Job-Internship</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" >
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>Typography</p>
+                        </a>
+                    </li>
+                
+                </ul>
+            </div>
+        </div>
+        <div class="main-panel " >
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg ml-1 " style=" color: #447e9b;">
+                <div class="">
+                    <a class="navbar-brand"  > Dashboard </a>
+
+                </div>
+            </nav>
+            <div >
+
+
+
+
+                <!--here is our User Form..............-->
+                <div class="container">
+                    <h1 class="mt-3">User Profile</h1>
+                    <hr>
+                   <h5> Personal Information</h5>
+                    <hr>
+                    <form method="POST">
+                      {% csrf_token %}
+                        <div class="form-row">
+                          <div class="col-md-6 mb-3">
+                            <label for="validationDefault01">First  name</label>
+                            <input type="text" class="form-control" name='firstname' id="validationDefault01" placeholder="First name" value="{{profile.firstName}}"  >
+                          </div>
+                        
+                          <div class="col-md-6 mb-3">
+                            <label for="validationDefault02">Last name</label>
+                            <input type="text" class="form-control" name='lastname' id="validationDefault02" placeholder="Last name" value="{{profile.lastName}}"  >
+                          </div>
+                        
+                          <div class="col-md-6 mb-3">
+                            <label for="validationDefault02">Contact #</label>
+                            <input type="text" class="form-control" name="contact" id="validationDefault02" placeholder="e.g. 03XX-XXXXXXX"  value="{{profile.contact}}" >
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label for="validationDefault01">Alumni Type</label>
+                            <select class="form-control" name="alumniType" onchange="test(this)"  id="alumniType" value="{{profile.alumaniType}}" required>
+                                <option >Professional Alumni</option>
+                                <option>Un-Professional Alumni</option>
+                              </select>
+                          </div>
+
+                        </div>
+                        <div class="form-row">
+                          
+                            <div class="col-md-12 mb-3">
+                              <label for="validationDefault02" >Tell us About yourself</label>
+                              <textarea type="text" class="form-control" rows="4" maxlength="150" id="validationDefault02"  placeholder="It will be scence by other Alumni's as your Introduction" value="Otto"  name='intro' >{{profile.intro}}</textarea>
+                            </div>
+                          </div>
+            
+                          <div class="row">
+                            
+                            <div class="col-md-5">
+                                <div class="form-group  mb-5">
+                                  <label >Profile Picture </label>
+                                  {% if profile.profilePic %}
+                                    <br>
+                                      Current File :<a target="_blank" href="{{profile.profilePic.url}}">{{profile.profilePic.url|slice:':10'}}...</a>
+                                  {% endif %}
+                                    
+                                  <input name="profilePic" type="file" class="form-control-file " id="exampleFormControlFile1" >
+                                </div>
+
+                            </div>
+
+                          <div class="col-md-5">
+                            <div class="form-group mb-5">
+                              <label >Upload Your CV or Resume(Optional)</label>
+                              {% if profile.profilePic %}
+                                <br>
+                                  Current File :<a target="_blank" href="{{profile.profilePic.url}}">{{profile.profilePic.url|slice:':10'}}...</a>
+                              {% endif %}
+                              
+                              <input name="cvResume" type="file" class="form-control-file " id="exampleFormControlFile1">
+                            </div>
+                          </div>
+
+                        </div>
+                          <hr>
+
+                        <div >
+                        <h5>Acadamic information</h5>
+                        <hr>
+                        <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="validationDefault02" >Date Started(university degree)</label>
+                            <input type="date" class="form-control" id="validationDefault02" value="{{userDeg.dateStarted|date:'Y-m-d'}}" placeholder="Last name" name="dateStarted"  >
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label for="validationDefault02">Date Finish(university degree)</label>
+                            <input type="date" class="form-control" id="validationDefault02" value="{{userDeg.dateFinished|date:'Y-m-d'}}"  placeholder="Last name" name="dateFinished"  >
+                          </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Department</label>
+                                <select class="selectpicker form-control " name="brand"  id='department' >
+                                  
+                                  {% if userDeg.degree %}
+                                  <option>{{userDeg.degree.department}}</option>                                    
+                                  {% else %}
+                                  <option>-----------</option>                                    
+                                  {% endif %}
+
+                                    
+                                  {% for dep in  department %}
+                                      <option value="{{dep}}">{{dep}}</option>
+                                  {% endfor %}
+                                </select>
+                              </div>
+                              <div class="col-md-6 mb-3">
+                                <label for="validationDefault02">Degree</label>
+                                <select class="selectpicker form-control " id='degree' name='degree'>
+                                  {% if userDeg.degree %}
+                                  <option>{{userDeg.degree}}</option>                                    
+                                  {% else %}
+                                  <option>-----------</option>                                    
+                                  {% endif %}
+                                </select>
+                              </div>
+                            </div>
+
+
+                        </div>
+
+ 
+                        <div id="workExpeience"  >
+                            <hr>
+
+                            <h5>Work Experience</h5>
+                            <hr>
+                         
+    
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="validationDefault02">Company Name</label>
+                                     <input type="text" class="form-control" id="validationDefault02" placeholder="e.g. Google ,Facebook, Teshla, PEAS etc."  name="companyName" value="{{workExp.companyName}}" >
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                    <label for="validationDefault02">Work Experience</label>
+                                    <select class="form-control" name="experienceTime">
+                                      
+                                      {% if workExp.experienceTime %}
+                                      <option >{{workExp.experienceTime}}</option>
+                                        {% else %}
+                                        <option value="none">Select Work Experience Session</option>
+                                      {% endif %}
+                                          
+                                        <option>3 Months</option>
+                                        <option>6 Months</option>
+                                        <option>9 Months</option>
+                                        <option>1 Year</option>
+                                        <option>2 Year</option>
+                                        <option>3 Year</option>
+                                        <option>4 Year</option>
+                                        <option>5 Year</option>
+                                        <option>6 Year</option>
+                                        <option>7 Year</option>
+                                        <option>8 Year</option>
+                                        <option>9 Year</option>
+                                        <option>10 Year</option>
+                                      </select>
+                                  </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="validationDefault02">Work as(Position)</label>
+                                         <input type="text"  name="workingPosition" class="form-control" id="validationDefault02" placeholder="e.g. senior devolper, junior devolper ,designer etc." name="position" value="{{workExp.position}}" >
+                                         
+                                      </div>
+                             
+                                      <div class="col-md-6 mb-3">
+                                        <label for="validationDefault02">Website (Portfolio)</label>
+                                         <input type="text" name="workingWebsite" class="form-control" id="validationDefault02" placeholder="e.g. www.aamirkhanPortfolio.com "   value="{{workExp.portfolioWebsite}}" >
+                                            <small class="ml-2 form-text text-muted" style="font-size: 11px;">
+                                                Optional (you can skip this one)
+                                            </small>                                        
+                                         
+                                      </div>
+                             
+                                    </div>
+                           
+    
+    
+                            </div>
+                        <button class="btn btn-dark btn-block mt-5" type="submit">Submit form</button>
+                      </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+{% endblock content %}

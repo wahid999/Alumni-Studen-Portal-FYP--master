@@ -1,0 +1,11 @@
+
+
+<form method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Submit">
+</form>
+
+{% for message in messages  %}
+  <h3>{{message}}</h3>
+{% endfor %}

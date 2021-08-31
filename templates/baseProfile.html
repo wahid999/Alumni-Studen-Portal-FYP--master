@@ -1,0 +1,206 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>
+    {% block title %}
+      
+
+            
+    {% endblock title %}
+    </title>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link href="{% static 'css/style.css'%}" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
+</head>
+<style>
+   
+</style>
+<body>
+
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                
+               
+                <img src="{{user.profile.profilePic.url}}" class="rounded-circle border border-light" width="220" height="220" alt="">
+                
+               
+                
+
+                <a   class="ml-5 simple-text">
+                    <span class="ml-4">   @{{user.username|lower|capfirst}}</span>
+                </a>
+            </div>
+            <hr class="bg-light ml-3 mr-4">
+            
+            <ul class=" list-unstyled components">
+
+
+                <li>
+                    <a class="text-center"  href="{%url 'dashboard'%}">Dashboard</a>
+                </li>
+                <!-- <hr class="bg-light ml-5 mr-5"> -->
+                <li>
+                    <a href="{%url 'UserInfo'%}" class="text-center">Personal Info</a>
+                </li> 
+                <li>
+                    <a class="text-center" href="{% url 'showMarketTrend' %}">Market Trend</a>
+                </li>
+
+                <li>
+                    <a href="{%url 'showSuccessStories'%}" class="text-center">Success Stories</a>
+                </li>
+                <li>
+                    <a href="{%url 'showCareer'%}"  class="text-center">Jobs-Internship</a>
+                </li>
+                         
+            </ul>
+
+           
+        </nav>
+
+        <!-- Page Content  -->
+        
+        <div id="content" style="background-color: white;">
+
+            <nav class="  ">
+                <div >
+
+                    <button type="button" id="sidebarCollapse" class="btn btn-outline-dark " style="border-radius: 20px;">
+                        <i class="fas fa-align-left"></i>
+                        <span>Sidebar</span>
+                    </button>
+                    <a href="{% url 'home' %}" class="btn btn-outline-dark float-right" style="border-radius: 20px;">
+                        <span>View Site</span>
+                    </a>
+                    
+
+                </div>
+            </nav>
+            <hr>
+
+            <div class="main" >
+                {% block content %}
+                  
+                {% endblock content %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar, #content').toggleClass('active');
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+        });
+    </script>
+    <script>
+
+        $(document).ready(
+        function() {
+            $("select#department").change(function() {
+            if ($(this).val() == 'Z') {
+              $("select#degree").html("<option>Select a Degree</option>");
+              $("select#degree").attr('disabled', true);
+            }
+            else {
+              var temp= $(this).val();
+              temp=temp.split(' ').join('@');
+              
+              var url = "/brand/" + temp + "/all_json_models";
+              var brand = $(this).val();
+              $.ajax({
+                type: "POST",
+                url:`{% url 'getDegreeByDepartment' %}`,
+                data: {
+                    'brand': brand,
+                     csrfmiddlewaretoken:'{{csrf_token }}',
+      
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var options = '<option value="Z">-----</option>';
+                    for (var i = 0; i < data.length; i++) {
+                      options += '<option value="' + data[i].name + '">' + data[i].name + '</option>';
+                  }
+                    $("select#degree").html(options);
+                    $("select#degree option:first").attr('selected', 'selected');
+                    $("select#degree").attr('disabled', false);
+                    
+                }   
+              })
+        
+          
+            }
+        });
+      
+      
+        $("select#degree").change(function(event) {
+        if ($(this).val() == -1) {
+        return;
+        }
+        });
+        });
+        
+      
+      
+        $(function () {
+      
+          $("#degreeSave").click(function () {
+            var degree=$('#degree').val()
+      
+            var data={
+              'degree':$('#degree').val(),
+              'dateStarted':$('#dateStarted').val(),
+              'dateFinished':$('#dateFinished').val()}
+            console.log(degree)
+            $.ajax({
+              url: ` {% url 'getUserDegree' %}`,
+              type: 'get',
+              dataType: 'json',
+              data:data,
+              success: function (data) {
+                alert('okk')
+              }
+            });
+          });
+        
+        });
+      
+      
+        setTimeout(
+            function() 
+            {
+              $("msg").fadeIn(200);
+              //call the fade out function here
+            }, 60000);
+      </script>
+</body>
+
+</html>

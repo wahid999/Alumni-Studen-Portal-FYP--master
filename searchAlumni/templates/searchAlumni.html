@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+ 
+<div class="container">
+  
+  {% if profileFlag %}
+  <form method="POST" class="mb-5">
+    {% csrf_token %}
+      <div class="row">
+  
+  
+        <div class="col">
+          <label for="">Username</label>
+  
+          <input type="text" class="form-control" placeholder="username" name="username">
+        </div>
+        <div class="col">
+            <label for=""> From (Year) </label>
+          <input  type="number" id="datepicker" min="1900" max="2099" step="1" placeholder="e.g. 2020" class="form-control" name="yearIn">
+        </div>
+        <div class="col">
+          <label for="">To (Year Out)</label>
+        <input  type="number" min="1900" max="2099" step="1" placeholder="e.g. 2040" class="form-control" name="yearOut">
+      </div>
+      <div class="col">
+          <label>Department</label>
+          <select class="selectpicker form-control " name="department"  id='department' >
+            
+            <option value="">-----------</option>                                    
+    
+            {% for dep in  department %}
+                <option value="{{dep}}">{{dep}}</option>
+            {% endfor %}
+          </select>
+       
+      </div>
+  
+      
+      <div class="col">
+          <label for="validationDefault02">Degree</label>
+          <select class="selectpicker form-control " id='degree' name='degree'>
+            <option value="">-----------</option>                                    
+  
+            {% for d in degree %}
+            <option>{{d.name}}</option>                                    
+            {% endfor %}
+  
+          </select>
+      </div>
+  
+  <div class="col">
+    <label for="">   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</label>
+    <button class="btn btn-outline-info ">Search</button>
+  </div>    
+      </div>
+    </form>
+      
+  {% else %}
+  
+  <p class="alert alert-info ml-5 mr-5 text-center">Complete Your Profile to use this Module <a href="{% url 'dashboard' %}">Click Here</a> </p>
+
+  {% endif %}
+    
+
+<hr class="mr-5">
+
+  {% for message in messages  %}
+    <p class="text-center alert alert-info">{{message}}</p>
+  {% endfor %}
+  
+  
+  
+  {% if users %}
+    
+    
+  {% for u  in users %}
+    
+  <div class="mt-3">
+    <div class="card mr-5" style="width: full;">
+      <div class="card-body">
+        <h5 class="card-title link" style="color: blue;"> <a href="{% url 'userView' u.username%}">@{{u.username}}  </a>     <span class="float-right mt-1"  style="color:black; font-weight: normal;font-size:15px"> Student Alumni</span> </h5>
+
+        <hr>
+        <p class="card-text">{{u.profile.intro}}</p>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+  {% else %}
+
+  
+  {% if flagToQuery %}
+  <p class="alert alert-danger text-center">No results found !</p>
+    
+  {% endif %}
+    
+  {% endif %}
+
+
+</div>
+{% endblock content %}

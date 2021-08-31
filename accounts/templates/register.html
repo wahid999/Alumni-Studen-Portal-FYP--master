@@ -1,0 +1,179 @@
+
+{% load  static  %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Register</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+
+<!--===============================================================================================-->
+
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/css-hamburgers/hamburgers.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animsition/css/animsition.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/daterangepicker/daterangepicker.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<!--===============================================================================================-->
+</head>
+<body>
+
+
+
+    <!--forms example-->
+
+    <ul class="nav justify-content-end " style="background-color: rgb(211, 210, 210);"  >
+		
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
+          </li>
+		
+	  </ul>
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100 p-l-85 p-r-85 p-t-25 p-b-50">
+				<form class="login100-form validate-form flex-sb flex-w" id="reg-form"  method="POST" >
+                        {% csrf_token %}    
+					<span class="login100-form-title p-b-35 p-l-130">
+                        <a href="{% url 'home' %}">
+						<img src="{% static 'images/icons/main-icon.jpeg' %}" height="140" width="140" style="border: 1px solid black;border-radius: 75px;padding: 10px;">
+                    </a>
+                    </span>
+
+                    <!--start of Email and password-->
+                    <div class="row">
+					{% for fields in  form %}
+					  
+						<div class="col-md-12">
+							<span class="txt1 p-b-5">
+								{{fields.label}}
+							</span>
+							<div class="wrap-input100 validate-input m-b-12" data-validate = "Enter a valid username">
+									{{fields}}
+                                <span class="focus-input100"></span>
+                            </div>
+                            
+                            {% if fields.errors %}
+                            <li class="alert alert-danger alert-spxl">{{fields.errors}}</li>
+                                
+                            {% endif %}
+                                
+                            <div>
+                                
+                            </div>
+						</div>
+					
+					{% endfor %}
+                </div>
+                  
+           
+
+                
+                <div class="row" id='reg-submit'>
+							
+					<div class="container-login100-form-btn col-md-6">
+						<button class="login100-form-btn btn-block"  >
+							Register
+						</button>
+					</div>
+                
+					<div class="col pull-right col-md-6">
+						<a href="{% url 'login' %}" onclick="myFunction()" class="txt3 pull-right p-t-15">
+								Already Have Account? &nbsp;Login
+						</a>
+					</div>
+				</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+
+                    
+
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+</body>
+</html>
+
+<script>
+	var form = document.getElementById('reg-form');
+
+	form.addEventListener('submit', function(e) {
+
+				
+				var username=document.getElementById('reg-username').value
+				if(
+					username.indexOf('!')>-1 || username.indexOf('`')>-1 || username.indexOf('*')>-1 || 
+					username.indexOf('@')>-1 || username.indexOf('&')>-1 || username.indexOf('(')>-1 || 
+					username.indexOf('#')>-1 || username.indexOf('^')>-1 || username.indexOf(')')>-1 || 
+					username.indexOf('$')>-1 || username.indexOf('%')>-1 || username.indexOf('-')>-1 || 
+					username.indexOf('+')>-1 || username.indexOf('=')>-1 || username.indexOf('/')>-1 || 
+					username.indexOf('?')>-1 || username.indexOf('<')>-1 || username.indexOf('>')>-1 || 
+					username.indexOf(',')>-1 || username.indexOf('.')>-1 || username.indexOf('|')>-1 
+				)	
+				{
+					var parent = document.getElementById('reg-username');
+					$('#reg-submit').after(` <hr> <div class="col-lg-12">
+					<p class=' mt-3  alert alert-danger alert-spxl'>Username cannot contain Special Characters</p>
+					</div><br>
+					`);
+					e.preventDefault();
+					document.getElementById('reg-username').value=''
+					setTimeout(function(){
+						$('.alert-spxl').remove();
+					  }, 5000);
+
+				}
+
+				if (username.charCodeAt(0)>=48 && username.charCodeAt(0)<=57)
+				{
+
+					var parent = document.getElementById('reg-username');
+					$('#reg-submit').after(` <hr> <div class="col-lg-12">
+					<p class=' mt-3  alert alert-danger alert-spxl '>First letter must be string</p>
+					</div><br>
+					`);
+					document.getElementById('reg-username').value=''
+					e.preventDefault();
+
+					setTimeout(function(){
+						$('.alert-spxl').remove();
+					  }, 5000);
+
+				}
+				
+	});
+	
+
+	  
+</script>
